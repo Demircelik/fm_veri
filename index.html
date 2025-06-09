@@ -224,5 +224,55 @@
     </div>
 
     <script src="script.js"></script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+
+<script>
+  // Firebase Projenizin Yapılandırma Kodu (Adım 4'te kopyaladığınız kod)
+  const firebaseConfig = {
+    apiKey: "AIzaSy...",
+    authDomain: "benim-web-uygulamam.firebaseapp.com",
+    projectId: "benim-web-uygulamam",
+    storageBucket: "benim-web-uygulamam.appspot.com",
+    messagingSenderId: "...",
+    appId: "1:..."
+  };
+
+  // Firebase'i Başlat
+  firebase.initializeApp(firebaseConfig);
+
+  // Firestore'u Başlat
+  const db = firebase.firestore();
+
+  // Şimdi veritabanı (db) nesnesini kullanarak veri ekleyebilir, okuyabilir veya güncelleyebilirsiniz.
+  // Örneğin, bir butona tıklandığında veri eklemek:
+  document.addEventListener('DOMContentLoaded', () => {
+      const veriGonderButton = document.getElementById('veriGonder'); // HTML'inizde böyle bir buton olduğunu varsayalım
+
+      if (veriGonderButton) {
+          veriGonderButton.addEventListener('click', async () => {
+              const isim = document.getElementById('isimInput').value; // HTML'inizde 'isimInput' id'li bir input olduğunu varsayalım
+              const email = document.getElementById('emailInput').value; // HTML'inizde 'emailInput' id'li bir input olduğunu varsayalım
+
+              try {
+                  await db.collection("iletisimFormu").add({
+                      isim: isim,
+                      email: email,
+                      timestamp: firebase.firestore.FieldValue.serverTimestamp() // Verinin ne zaman eklendiğini kaydeder
+                  });
+                  alert("Veriler başarıyla kaydedildi!");
+                  // Input alanlarını temizle
+                  document.getElementById('isimInput').value = '';
+                  document.getElementById('emailInput').value = '';
+              } catch (e) {
+                  console.error("Veri eklenirken hata oluştu: ", e);
+                  alert("Veri kaydedilirken bir hata oluştu.");
+              }
+          });
+      }
+  });
+</script>
 </body>
 </html>
