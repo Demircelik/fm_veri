@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futbolcu Kıyaslama Sayfası</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Kıyaslama sayfasına özel stil ayarlamaları */
+        .compare-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .compare-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .compare-controls .form-group {
+            flex: 1 1 calc(50% - 10px);
+            max-width: calc(50% - 10px);
+            margin-bottom: 0;
+        }
+        .compare-controls button {
+            flex-grow: 1;
+            width: auto;
+            min-width: 150px;
+            margin-left: auto; /* Sağdan hizala */
+        }
+        @media (max-width: 600px) {
+            .compare-controls .form-group,
+            .compare-controls button {
+                flex-basis: 100%;
+                max-width: 100%;
+                margin-left: 0;
+            }
+        }
+
+        .compare-results {
+            /* overall_stats.css'deki overall-stats-grid gibi */
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* Her satırda 2 tablo */
+            gap: 20px;
+            width: 100%; /* Konteynerin tam genişliğini al */
+            margin-top: 20px; /* Üstten boşluk */
+            justify-content: center; /* Ortala */
+        }
+
+        .compare-box {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            box-sizing: border-box; /* Padding ve border genişliğe dahil */
+            /* Animasyon geçişi eklendi */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: left; /* İçindeki metinleri sola hizala */
+        }
+
+        /* Hover efekti eklendi */
+        .compare-box:hover {
+            transform: translateY(-3px); /* Hafif yukarı kalkma */
+            box-shadow: var(--shadow-md); /* Gölgenin koyulaşması */
+        }
+
+        /* Kıyaslama detay tabloları için genişliği 100% yapalım (Kıyaslama Sonuçları gibi) */
+        .compare-box.full-width {
+            grid-column: 1 / -1; /* Tüm sütunları kapla */
+        }
+
+
+        .compare-box h3 {
+            font-family: var(--font-heading);
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .compare-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .compare-box ul li {
+            padding: 5px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+        .compare-box ul li:last-child {
+            border-bottom: none;
+        }
+
+        /* Tabloya özel stiller (overall_stats.html'den kopyalandı) */
+        .compare-box table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .compare-box table thead {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+        }
+        .compare-box table th,
+        .compare-box table td {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .compare-box table th {
+            font-weight: 600;
+        }
+        .compare-box table tbody tr:nth-child(even) {
+            background-color: var(--dark-bg);
+        }
+        .compare-box table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.08);
+        }
+
+        /* Mobil cihazlar için responsive ayar */
+        @media (max-width: 600px) {
+            .compare-results {
+                grid-template-columns: 1fr; /* Mobil cihazlarda tek sütun */
+            }
+            .compare-box.full-width {
+                grid-column: 1; /* Mobil cihazlarda tek sütun */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SEZON KIYASLAMASI</h1>
+
+        <div class="compare-section form-section">
+            <div class="compare-controls">
+                <div class="form-group">
+                    <label for="season1Select">Sezonu Seç:</label>
+                    <select id="season1Select"></select>
+                </div>
+                <div class="form-group">
+                    <label for="season2Select">Sezonu Seç:</label>
+                    <select id="season2Select"></select>
+                </div>
+                <button id="compareSeasonsBtn">Sezonları Kıyasla</button>
+            </div>
+            
+            <div class="compare-results">
+                <div class="compare-box">
+                    <h3><span id="summarySeason1Display"></span> Özeti</h3>
+                    <ul id="summarySeason1">
+                        <li>Toplam Oyuncu: -</li>
+                        <li>Yerli Oyuncu: -</li>
+                        <li>Yabancı Oyuncu: -</li>
+                        <li>Toplam Gol: -</li>
+                        <li>Toplam Asist: -</li>
+                        <li>Ort. Puan: -</li>
+                    </ul>
+                </div>
+                <div class="compare-box">
+                    <h3><span id="summarySeason2Display"></span> Özeti</h3>
+                    <ul id="summarySeason2">
+                        <li>Toplam Oyuncu: -</li>
+                        <li>Yerli Oyuncu: -</li>
+                        <li>Yabancı Oyuncu: -</li>
+                        <li>Toplam Gol: -</li>
+                        <li>Toplam Asist: -</li>
+                        <li>Ort. Puan: -</li>
+                    </ul>
+                </div>
+
+                <div class="compare-box full-width">
+                    <h3>Kıyaslama Sonuçları</h3>
+                    <ul id="comparisonOutput">
+                        <li>Oyuncu Sayısı Farkı: -</li>
+                        <li>Yerli Oyuncu Farkı: -</li>
+                        <li>Yabancı Oyuncu Farkı: -</li>
+                        <li>Gol Farkı: -</li>
+                        <li>Asist Farkı: -</li>
+                        <li>Ort. Puan Farkı: -</li>
+                        </ul>
+                </div>
+
+                <div class="compare-box">
+                    <h3><span id="season1BestByPositionDisplay"></span> Sezona Göre En Yüksek Ort. Puan</h3>
+                    <table id="season1BestByPositionTable">
+                        <thead>
+                            <tr>
+                                <th>Pozisyon</th>
+                                <th>Adı</th>
+                                <th>Ort. Puan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="compare-box">
+                    <h3><span id="season2BestByPositionDisplay"></span> Sezona Göre En Yüksek Ort. Puan</h3>
+                    <table id="season2BestByPositionTable">
+                        <thead>
+                            <tr>
+                                <th>Pozisyon</th>
+                                <th>Adı</th>
+                                <th>Ort. Puan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="compare-box">
+                    <h3><span id="season1TopGoalScorersDisplay"></span> Sezon En Çok Gol Atanlar</h3>
+                    <table id="season1TopGoalScorersTable"><thead><tr><th>Adı</th><th>Gol</th></tr></thead><tbody></tbody></table>
+                </div>
+                <div class="compare-box">
+                    <h3><span id="season2TopGoalScorersDisplay"></span> Sezon En Çok Gol Atanlar</h3>
+                    <table id="season2TopGoalScorersTable"><thead><tr><th>Adı</th><th>Gol</th></tr></thead><tbody></tbody></table>
+                </div>
+
+                <div class="compare-box">
+                    <h3><span id="season1TopAssistersDisplay"></span> Sezon En Çok Asist Yapanlar</h3>
+                    <table id="season1TopAssistersTable"><thead><tr><th>Adı</th><th>Asist</th></tr></thead><tbody></tbody></table>
+                </div>
+                <div class="compare-box">
+                    <h3><span id="season2TopAssistersDisplay"></span> Sezon En Çok Asist Yapanlar</h3>
+                    <table id="season2TopAssistersTable"><thead><tr><th>Adı</th><th>Asist</th></tr></thead><tbody></tbody></table>
+                </div>
+
+                <div class="compare-box">
+                    <h3><span id="season1TopRatedPlayersDisplay"></span> Sezon En Yüksek Ort. Puan</h3>
+                    <table id="season1TopRatedPlayersTable"><thead><tr><th>Adı</th><th>Ort. Puan</th></tr></thead><tbody></tbody></table>
+                </div>
+                <div class="compare-box">
+                    <h3><span id="season2TopRatedPlayersDisplay"></span> Sezon En Yüksek Ort. Puan</h3>
+                    <table id="season2TopRatedPlayersTable"><thead><tr><th>Adı</th><th>Ort. Puan</th></tr></thead><tbody></tbody></table>
+                </div>
+
+                <div class="compare-box">
+                    <h3><span id="season1TopPotentialPlayersDisplay"></span> Sezon En Yüksek Potansiyel</h3>
+                    <table id="season1TopPotentialPlayersTable"><thead><tr><th>Adı</th><th>Potansiyel</th></tr></thead><tbody></tbody></table>
+                </div>
+                <div class="compare-box">
+                    <h3><span id="season2TopPotentialPlayersDisplay"></span> Sezon En Yüksek Potansiyel</h3>
+                    <table id="season2TopPotentialPlayersTable"><thead><tr><th>Adı</th><th>Potansiyel</th></tr></thead><tbody></tbody></table>
+                </div>
+
+            </div>
+        </div>
+
+        <button onclick="location.href='index.html'" style="margin-top: 20px; align-self: center;">Ana Sayfaya Geri Dön</button>
+    </div>
+
+    <script src="compare.js"></script>
+</body>
+</html>

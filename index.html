@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Futbolcu Yönetim Sistemi</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>FUTBOLCU YÖNETİM SİSTEMİ</h1>
+
+        <div class="season-management-section">
+            <h2>Sezon Yönetimi</h2> <div class="season-inputs-top-row">
+                <select id="currentSeasonSelect"></select> 
+                <input type="text" id="newSeasonInput" placeholder="YYYY-YYYY"> 
+            </div>
+            
+            <button id="addSeasonBtn">Sezon Ekle</button>
+        </div>
+
+        <div class="form-section">
+            <h2>Oyuncu Ekle (<span id="activeSeasonDisplay"></span>)</h2>
+            <form id="playerForm">
+                <div class="form-group">
+                    <label for="playerName">Oyuncu Adı:</label>
+                    <input type="text" id="playerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerPotential">Mevcut Potansiyel (0-200):</label>
+                    <input type="number" id="playerPotential" min="0" max="200" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerPosition">Pozisyon:</label>
+                    <select id="playerPosition" required>
+                        <option value="">Seçiniz</option>
+                        <option value="GK">GK (Kaleci)</option>
+                        <option value="DC">DC (Stoper)</option>
+                        <option value="DR">DR (Sağ Bek)</option>
+                        <option value="DL">DL (Sol Bek)</option>
+                        <option value="DOS">DOS (Defansif Orta Saha)</option>
+                        <option value="MC">MC (Merkez Orta Saha)</option>
+                        <option value="ML">ML (Sol Kanat Orta Saha)</option>
+                        <option value="MR">MR (Sağ Kanat Orta Saha)</option>
+                        <option value="AMC">AMC (Ofansif Orta Saha Merkez)</option>
+                        <option value="AMR">AMR (Ofansif Orta Saha Sağ)</option>
+                        <option value="AML">AML (Ofansif Orta Saha Sol)</option>
+                        <option value="ST">ST (Santrafor)</option>
+                        <option value="Diğer">Diğer</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="playerMatches">Maç Sayısı:</label>
+                    <input type="number" id="playerMatches" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerGoals">Gol Sayısı:</label>
+                    <input type="number" id="playerGoals" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerAssists">Asist Sayısı:</label>
+                    <input type="number" id="playerAssists" min="0" value="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="playerAvgRating">Ort. Puan (0-10):</label>
+                    <input type="number" id="playerAvgRating" min="0" max="10" step="0.01" value="0.0" required>
+                </div>
+                <div class="form-group">
+                    <label for="isForeign">Yabancı Oyuncu:</label>
+                    <input type="checkbox" id="isForeign">
+                </div>
+                <button type="submit">Oyuncu Ekle</button>
+            </form>
+        </div>
+
+        <div class="display-section">
+            <h2>Oyuncular (<span id="displaySeasonDisplay"></span>)</h2>
+            <div class="filter-controls">
+                <label for="positionFilter">Pozisyona Göre Filtrele:</label>
+                <select id="positionFilter">
+                    <option value="Tümü">Tümü</option>
+                    <option value="GK">GK (Kaleci)</option>
+                    <option value="DC">DC (Stoper)</option>
+                    <option value="DR">DR (Sağ Bek)</option>
+                    <option value="DL">DL (Sol Bek)</option>
+                    <option value="DOS">DOS (Defansif Orta Saha)</option>
+                    <option value="MC">MC (Merkez Orta Saha)</option>
+                    <option value="ML">ML (Sol Kanat Orta Saha)</option>
+                    <option value="MR">MR (Sağ Kanat Orta Saha)</option>
+                    <option value="AMC">AMC (Ofansif Orta Saha Merkez)</option>
+                    <option value="AMR">AMR (Ofansif Orta Saha Sağ)</option>
+                    <option value="AML">AML (Ofansif Orta Saha Sol)</option>
+                    <option value="ST">ST (Santrafor)</option>
+                    <option value="Diğer">Diğer</option>
+                </select>
+            </div>
+            
+            <table id="playerTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Adı</th>
+                        <th>Pozisyon</th>
+                        <th>Potansiyel</th>
+                        <th>Maç</th>
+                        <th>Gol</th>
+                        <th>Asist</th>
+                        <th>Ort. Puan</th>
+                        <th>Yabancı</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="analysis-section">
+            <h2>Analiz (<span id="analysisSeasonDisplay"></span>)</h2>
+            <div id="analysisOutput">
+                </div>
+
+            <div class="analysis-tables-container">
+                <div class="analysis-table-box">
+                    <h3>Yerli/Yabancı Oyuncu Sayısı</h3>
+                    <table id="playerTypeCountTable">
+                        <thead>
+                            <tr>
+                                <th>Oyuncu</th>
+                                <th>Sayı</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="analysis-table-box">
+                    <h3>Pozisyonlara Göre Oyuncu Sayısı</h3>
+                    <table id="playersByPositionCountTable">
+                        <thead>
+                            <tr>
+                                <th>Pozisyon</th>
+                                <th>Yabancı</th>
+                                <th>Toplam</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="analysis-table-box">
+                    <h3>En İyi 5 Oyuncu (Ort. Puan)</h3>
+                    <table id="top5OverallRatingTable">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>Pozisyon</th>
+                                <th>Ort. Puan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="analysis-table-box">
+                    <h3>En Çok Gol Atan 5 Oyuncu</h3>
+                    <table id="topGoalScorersTable">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>Pozisyon</th>
+                                <th>Gol</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="analysis-table-box">
+                    <h3>En Çok Asist Yapan 5 Oyuncu</h3>
+                    <table id="topAssistersTable">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>Pozisyon</th>
+                                <th>Asist</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="analysis-table-box">
+                    <h3>En Yüksek Potansiyelli 5 Oyuncu</h3>
+                    <table id="topPotentialPlayersTable">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>Pozisyon</th>
+                                <th>Potansiyel</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="import-export-section form-section">
+            <h2>Veri İçe/Dışa Aktar</h2>
+            <div class="form-group">
+                <label for="csvFileInput">CSV Dosyası Seç (İçe Aktırma):</label>
+                <input type="file" id="csvFileInput" accept=".csv">
+            </div>
+            <button id="importCsvBtn">CSV İçe Aktar</button>
+            <button id="exportCsvBtn">CSV Dışa Aktar</button>
+        </div>
+
+        <div class="compare-overall-buttons form-section">
+            <button id="goToComparePageBtn" onclick="location.href='compare.html'">Sezon Kıyaslaması</button>
+            <button id="goToOverallStatsPageBtn" onclick="location.href='overall_stats.html'">Genel İstatistikler</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

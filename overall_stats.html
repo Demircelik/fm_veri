@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genel İstatistikler</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* overall_stats.html için özel stil ayarlamaları */
+        .overall-stats-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .overall-stats-grid {
+            display: grid;
+            /* Her satırda iki tabloyu zorlamak için */
+            grid-template-columns: repeat(2, 1fr); /* 2 eşit sütun */
+            gap: 20px;
+            width: 100%;
+        }
+
+        .overall-stats-box {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-color);
+            text-align: center; /* İçindeki metinleri ortalar */
+            box-sizing: border-box; /* Padding ve border genişliğe dahil */
+            /* Animasyon geçişi eklendi */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Hover efekti eklendi */
+        .overall-stats-box:hover {
+            transform: translateY(-3px); /* Hafif yukarı kalkma */
+            box-shadow: var(--shadow-md); /* Gölgenin koyulaşması */
+        }
+
+
+        .overall-stats-box h3 {
+            font-family: var(--font-heading);
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--primary-color);
+        }
+
+        .overall-stats-box p { /* Bu genel bir p etiketi, emin değilim kullanılıp kullanılmadığından */
+            margin: 5px 0;
+        }
+
+        .overall-stats-box .season-image { /* Bu stil seasons.html'deki kullanım içindi, overall_stats'ta yok */
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius-md);
+            margin-bottom: 10px;
+        }
+
+        /* Tabloya özel stiller */
+        .overall-stats-box table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .overall-stats-box table thead {
+            background-color: var(--primary-color);
+            color: var(--light-text-color);
+        }
+        .overall-stats-box table th,
+        .overall-stats-box table td {
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .overall-stats-box table th {
+            font-weight: 600;
+        }
+        .overall-stats-box table tbody tr:nth-child(even) {
+            background-color: var(--dark-bg);
+        }
+        .overall-stats-box table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.08);
+        }
+
+        /* Genel Özet Listesi için sol hizalama */
+        /* Bu ID'ye sahip eleman artık HTML'de yok, bu stilin bir etkisi olmayacak */
+        #overallSummaryList {
+            text-align: left; /* Metni sola hizala */
+        }
+        #overallSummaryList li {
+            text-align: left; /* Liste öğelerini de sola hizala */
+        }
+
+
+        /* Mobil cihazlar için responsive ayar (tek sütun) */
+        @media (max-width: 600px) {
+            .overall-stats-grid {
+                grid-template-columns: 1fr; /* Mobil cihazlarda tek sütun */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GENEL İSTATİSTİKLER</h1>
+
+        <div class="overall-stats-section form-section">
+            <div class="overall-stats-grid">
+                
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre Gol Sayısı</h3>
+                    <table id="seasonTotalGoalsTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Toplam Gol</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre Asist Sayısı</h3>
+                    <table id="seasonTotalAssistsTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Toplam Asist</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre Ortalama Puan</h3>
+                    <table id="seasonAvgRatingTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Ort. Puan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre En Çok Gol Atanlar</h3>
+                    <table id="seasonTopScorersTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Oyuncu</th>
+                                <th>Gol Sayısı</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre En Çok Asist Yapanlar</h3>
+                    <table id="seasonTopAssistersTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Oyuncu</th>
+                                <th>Asist Sayısı</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre En Yüksek Puanlılar</h3>
+                    <table id="seasonTopRatedTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Oyuncu</th>
+                                <th>Ort. Puan</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+
+                <div class="overall-stats-box">
+                    <h3>Sezonlara Göre En Yüksek Potansiyelliler</h3>
+                    <table id="seasonTopPotentialTable">
+                        <thead>
+                            <tr>
+                                <th>Sezon</th>
+                                <th>Oyuncu</th>
+                                <th>Potansiyel</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="location.href='index.html'" style="margin-top: 20px; align-self: center;">Ana Sayfaya Geri Dön</button>
+    </div>
+
+    <script src="overall_stats.js"></script>
+</body>
+</html>
