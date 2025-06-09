@@ -375,3 +375,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     populateSeasonSelects(); // Sayfa yüklendiğinde sezon dropdown'larını doldur
 });
+
+
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBz5Vs77WYsf_I8y7YzHVIVMKpfGiImh8o",
+    authDomain: "fm-veri.firebaseapp.com",
+    projectId: "fm-veri",
+    storageBucket: "fm-veri.firebasestorage.app",
+    messagingSenderId: "740937341711",
+    appId: "1:740937341711:web:c610ec54779447be787c7a",
+    measurementId: "G-1ELM9KSY6T"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
