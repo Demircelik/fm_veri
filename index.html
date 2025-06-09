@@ -226,54 +226,30 @@
     <script src="script.js"></script>
 
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-<script>
-  // Firebase Projenizin Yapılandırma Kodu (Adım 4'te kopyaladığınız kod)
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
   const firebaseConfig = {
-    apiKey: "AIzaSy...",
-    authDomain: "benim-web-uygulamam.firebaseapp.com",
-    projectId: "benim-web-uygulamam",
-    storageBucket: "benim-web-uygulamam.appspot.com",
-    messagingSenderId: "...",
-    appId: "1:..."
+    apiKey: "AIzaSyBz5Vs77WYsf_I8y7YzHVIVMKpfGiImh8o",
+    authDomain: "fm-veri.firebaseapp.com",
+    projectId: "fm-veri",
+    storageBucket: "fm-veri.firebasestorage.app",
+    messagingSenderId: "740937341711",
+    appId: "1:740937341711:web:c610ec54779447be787c7a",
+    measurementId: "G-1ELM9KSY6T"
   };
 
-  // Firebase'i Başlat
-  firebase.initializeApp(firebaseConfig);
-
-  // Firestore'u Başlat
-  const db = firebase.firestore();
-
-  // Şimdi veritabanı (db) nesnesini kullanarak veri ekleyebilir, okuyabilir veya güncelleyebilirsiniz.
-  // Örneğin, bir butona tıklandığında veri eklemek:
-  document.addEventListener('DOMContentLoaded', () => {
-      const veriGonderButton = document.getElementById('veriGonder'); // HTML'inizde böyle bir buton olduğunu varsayalım
-
-      if (veriGonderButton) {
-          veriGonderButton.addEventListener('click', async () => {
-              const isim = document.getElementById('isimInput').value; // HTML'inizde 'isimInput' id'li bir input olduğunu varsayalım
-              const email = document.getElementById('emailInput').value; // HTML'inizde 'emailInput' id'li bir input olduğunu varsayalım
-
-              try {
-                  await db.collection("iletisimFormu").add({
-                      isim: isim,
-                      email: email,
-                      timestamp: firebase.firestore.FieldValue.serverTimestamp() // Verinin ne zaman eklendiğini kaydeder
-                  });
-                  alert("Veriler başarıyla kaydedildi!");
-                  // Input alanlarını temizle
-                  document.getElementById('isimInput').value = '';
-                  document.getElementById('emailInput').value = '';
-              } catch (e) {
-                  console.error("Veri eklenirken hata oluştu: ", e);
-                  alert("Veri kaydedilirken bir hata oluştu.");
-              }
-          });
-      }
-  });
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
 </script>
+
     
 </body>
 </html>
